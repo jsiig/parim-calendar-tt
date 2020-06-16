@@ -1,3 +1,30 @@
-.header {
+@import '../helpers';
+@import '../variables';
 
+.header {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+  background: $radial-gradient-blue;
+
+  @include breakpoint('min-width', $mobile-breakpoint) {
+    height: 200px;
+  }
+
+
+  &__title {
+    font-style: normal;
+    font-weight: 900;
+    color: $white;
+
+    font-size: 18px;
+    line-height: 22px;
+
+    @include breakpoint('min-width', $mobile-breakpoint) {
+      font-size: 48px;
+      line-height: 59px;
+    }
+  }
 }

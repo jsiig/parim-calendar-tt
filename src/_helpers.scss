@@ -1,0 +1,5 @@
+@mixin breakpoint($type, $value) {
+  @media screen and (#{$type}: #{$value}) {
+    @content;
+  }
+};

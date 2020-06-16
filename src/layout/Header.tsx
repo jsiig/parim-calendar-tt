@@ -4,7 +4,9 @@ import './Header.scss';
 function Header() {
     return (
         <div className="header">
-            Estonian Folk Calendar
+            <h1 className="header__title">
+                Estonian Folk Calendar
+            </h1>
         </div>
     );
 }

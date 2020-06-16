@@ -1,0 +1,40 @@
+.week-picker {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  &__week-container {
+    display: flex;
+    flex-flow: column nowrap;
+  }
+
+  &__title, &__week { margin: 0; padding: 0; }
+
+  &__title {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 14px;
+    height: 14px;
+  }
+
+  &__week {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 14px;
+    height: 14px;
+  }
+
+  &__button {
+    appearance: none;
+    outline: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 32px;
+    height: 54px;
+    line-height: 32px;
+    padding: 12px;
+  }
+}

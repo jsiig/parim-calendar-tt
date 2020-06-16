@@ -1,0 +1,69 @@
+@import '../helpers';
+@import '../variables';
+
+.card {
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+
+  &__header {
+    padding: 12px;
+    display: flex;
+    background: $gray;
+    color: $white;
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    @include breakpoint('min-width', $small-breakpoint) {
+      flex-flow: column nowrap;
+      justify-content: initial;
+    }
+  }
+
+  &__body {
+    padding: 12px;
+  }
+
+  &__day, &__date, &__event {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__day {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+  }
+
+  &__date {
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 21px;
+  }
+
+  &__event {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  // States
+  &--none {
+    .card__header {
+      background: $gray;
+    }
+    color: $gray;
+  }
+
+  &--folk {
+    .card__header {
+      background: $radial-gradient-blue;
+    }
+  }
+  &--public {
+    .card__header {
+      background: $radial-gradient-red;
+    }
+    color: $red;
+  }
+}

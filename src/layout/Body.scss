@@ -1,0 +1,19 @@
+@import "../helpers";
+@import "../variables";
+
+.body {
+  padding: 4vw 8vw;
+  display: flex;
+  @include breakpoint('min-width', $small-breakpoint) {
+    flex-flow: row wrap;
+    justify-content: space-between;
+  }
+}
+
+.cards {
+  padding-top: 4vw;
+  width: 100%;
+  flex: 1 0 100%;
+  display: flex;
+  flex-flow: column nowrap;
+}

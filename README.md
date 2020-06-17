@@ -4,7 +4,7 @@
 * Deployed to https://parim-test-task.siig.ee/ (S3 Static Website Hosting + 
 CloudFlare CDN with SSL)
 
-## Approaches, etc.
+## Some info
 
 * Design mockup I created in Figma before starting work has been attached in a
 zip file. 

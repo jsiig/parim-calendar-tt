@@ -16,7 +16,6 @@ params for the request; and since my library of choice - axios - does not play
 nice with GET + JSON body, I chose the POST path.
 * So, I haven't worked with TypeScript, React or Redux in over 6 months now.
 [This is the guide I used to get started again.](https://levelup.gitconnected.com/set-up-a-typescript-react-redux-project-35d65f14b869)
-Feels like a bit of a mess I must say, feels like it needs a refactor.
 * At the time of writing this README, I haven't added any tests or runtime
 PropTypes.
 
@@ -25,6 +24,7 @@ PropTypes.
 idea from a UX perspective - do we want to fill up user's history on each page
 nav? We'd need a proper datepicker.)
 * Tests for store actions.
+* Runtime PropTypes - Typescript is only helpful at compile-time.
 * Refactor - I feel this is somewhat messier code than I usually write,
 it may be down to the fact that I'm more used to the Vue ecosystem nowadays.
 * Figure out a couple of Typescript issues when dispatching redux-thunk

@@ -8,13 +8,12 @@
   align-items: center;
   height: 70px;
   background: $radial-gradient-blue;
-  position: sticky;
+  position: relative;
   z-index: 10;
   top: 0;
 
   @include breakpoint('min-width', $mobile-breakpoint) {
     height: 200px;
-    position: relative;
   }
 
   &__title {

@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import dayjs from "dayjs";
 
 import "./Card.scss"
 
@@ -11,18 +12,21 @@ interface Event {
 interface Props {
     day: string;
     date: string;
+    dateUnformatted: string;
     events: Array<Event>;
 }
 
 function Card (props: Props) {
-    const { events, day, date } = props;
+    const { events, day, date, dateUnformatted } = props;
     const isPublic = events.filter(e => e.type === 'public').length;
     const isFolk = !isPublic && events.filter(e => e.type === 'folk').length;
+    const today = dayjs().isSame(dateUnformatted, 'day');
 
     const classes = {
         'card--none': !events.length,
         'card--folk':  isFolk,
-        'card--public': isPublic
+        'card--public': isPublic,
+        "card--today": today
     };
 
     const eventClasses = (event: Event) => ({

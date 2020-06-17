@@ -6,10 +6,13 @@ $purple: #9038FF;
 $white: #FFF;
 $gray: #AEAEAE;
 $black: #000;
+$green: #4CA98D;
+$blue-alt: #5B84D3;
 
 // Gradients
 $radial-gradient-blue: radial-gradient(100% 2805.08% at 100% 49.3%, $purple 0%, $blue 100%);
 $radial-gradient-red: radial-gradient(100% 2805.08% at 100% 50%, $red 0%, $orange 100%);
+$radial-gradient-green: radial-gradient(100% 2805.08% at 100% 50%, $blue-alt 0%, $green 100%);
 
 // Fonts
 $body-font-family: "Montserrat", Helvetica, Arial, sans-serif;

@@ -57,18 +57,20 @@ function App(props: PropsFromRedux) {
     const holidaysKeys = Object.keys(holidays);
     const onlyHolidaysKeys = holidaysKeys.filter(key => holidays[key].events.length);
 
-    const cards = holidaysKeys.map((key, index) => {
+    const cards = holidaysKeys.map(key => {
         const { day, date, events } = holidays[key];
 
         const lastWithEvents = onlyHolidaysKeys.length - 1 === onlyHolidaysKeys.indexOf(key);
         const adjacentToNext = onlyHolidaysKeys.indexOf(holidaysKeys[holidaysKeys.indexOf(key) + 1]) !== -1;
 
-        return (<Fragment key={key}>
-            <Card day={day} date={date} events={events} />
-            {
-                events.length && !lastWithEvents && !adjacentToNext ? <CardEllipsis /> : ''
-            }
-        </Fragment>)
+        return (
+            <Fragment key={key}>
+                <Card day={day} date={date} events={events} dateUnformatted={key} />
+                {
+                    events.length && !lastWithEvents && !adjacentToNext ? <CardEllipsis /> : ''
+                }
+            </Fragment>
+        );
     });
 
     const noEvents = (

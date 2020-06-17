@@ -9,6 +9,7 @@
   &__container {
     flex: 1 0 auto;
     padding: 8px;
+    position: relative;
 
     @include breakpoint('min-width', $mobile-breakpoint) {
       max-width: 250px;
@@ -119,6 +120,22 @@
   &--public {
     .card__header {
       background: $radial-gradient-red;
+    }
+  }
+
+  &--today {
+    .card__header {
+      background: $radial-gradient-green;
+    }
+
+    &:after {
+      content: "TODAY";
+      font-weight: bold;
+      font-size: 10px;
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      opacity: 0.5;
     }
   }
 }

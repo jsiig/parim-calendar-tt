@@ -41,11 +41,13 @@ function Card (props: Props) {
     );
 
     return (
-        <div className="card__container">
-            <div className={classNames("card", classes)}>
+        <div className={classNames("card__container", classes)}>
+            <div className="card">
                 <div className="card__header">
                     <h3 className="card__day">{day}</h3>
                     <h4 className="card__date">{date}</h4>
+                    { isPublic ? <ion-icon name="ice-cream-outline"></ion-icon> : '' }
+                    { isFolk ? <ion-icon name="flower-outline"></ion-icon> : '' }
                 </div>
                 <div className="card__body">
                     {renderEvents}

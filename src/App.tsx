@@ -1,7 +1,12 @@
-import React, { useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux'
+import React, { Fragment, useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 
-import {changeWeek, changeWeekStartDay, getVisibleHolidays} from './redux/calendar'
+import {
+    changeWeek,
+    changeWeekStartDay,
+    getWeek
+} from './redux/calendar';
+import { RootState } from "./redux";
 
 import Header from "./layout/Header";
 import Body from "./layout/Body";
@@ -9,21 +14,17 @@ import WeekPicker from "./lib/WeekPicker";
 import WeekDayPicker from "./lib/WeekDayPicker";
 import Error from "./lib/Error";
 import Loading from "./lib/Loading";
+import CardEllipsis from "./lib/CardEllipsis";
 
 import './App.scss';
 import Card from "./lib/Card";
-
-interface RootState {
-    calendar: any;
-}
 
 const mapState = (state: RootState) => ({
     loading: state.calendar.loading,
     error: state.calendar.error,
     currentWeek: state.calendar.currentWeek,
     weekStarts: state.calendar.weekStarts,
-    weekStartsObj: state.calendar.weekStartsObj,
-    holidays: getVisibleHolidays(state.calendar.holidays, state.calendar.currentWeek)
+    holidays: getWeek(state.calendar.holidays, state.calendar.currentWeek)
 });
 
 const mapDispatch = (dispatch: any) => ({
@@ -53,11 +54,27 @@ function App(props: PropsFromRedux) {
         onLoad();
     }, []);
 
-    const holidaysKeys = Object.keys(props.holidays);
-    const cards = holidaysKeys.map(key => {
+    const holidaysKeys = Object.keys(holidays);
+    const onlyHolidaysKeys = holidaysKeys.filter(key => holidays[key].events.length);
+
+    const cards = holidaysKeys.map((key, index) => {
         const { day, date, events } = holidays[key];
-        return <Card day={day} date={date} events={events} key={key} />
+
+        const lastWithEvents = onlyHolidaysKeys.length - 1 === onlyHolidaysKeys.indexOf(key);
+        const adjacentToNext = onlyHolidaysKeys.indexOf(holidaysKeys[holidaysKeys.indexOf(key) + 1]) !== -1;
+
+        return (<Fragment key={key}>
+            <Card day={day} date={date} events={events} />
+            {
+                events.length && !lastWithEvents && !adjacentToNext ? <CardEllipsis /> : ''
+            }
+        </Fragment>)
     });
+
+    const noEvents = (
+        holidaysKeys.filter((key: string) => holidays[key].events.length > 0).length ?
+            '' : <div className="no-events">No holidays to display for this week :(</div>
+    );
 
     let renderable: JSX.Element;
 
@@ -66,8 +83,9 @@ function App(props: PropsFromRedux) {
     } else if (error) {
         renderable = (<Error onRetry={() => onLoad()} error={error} />);
     } else {
-        renderable = (<div className="cards">{cards}</div>);
+        renderable = (<div className="cards">{cards}{noEvents}</div>);
     }
+
 
     return (
         <div className="app">

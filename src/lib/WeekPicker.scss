@@ -1,12 +1,31 @@
+@import "../variables";
+@import "../helpers";
+
 .week-picker {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  justify-content: space-between;
   margin-left: -23px;
+  opacity: 0.7;
+
+  @include breakpoint('max-width', #{$mobile-breakpoint - 1px}) {
+    flex: 1 0 auto;
+    margin-right: -23px;
+
+    .week-picker__week-container {
+      flex: 1 0 auto;
+    }
+  }
+
 
   &__week-container {
     display: flex;
     flex-flow: column nowrap;
+    justify-content: center;
+    min-width: 240px;
+    flex: 0 0 auto;
+    padding-top:1px;
   }
 
   &__title, &__week { margin: 0; padding: 0; }

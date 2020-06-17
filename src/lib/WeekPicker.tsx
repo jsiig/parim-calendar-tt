@@ -2,14 +2,6 @@ import React from "react";
 import './WeekPicker.scss';
 import { Dayjs } from "dayjs";
 
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            'ion-icon': any;
-        }
-    }
-}
-
 interface Props {
     onChange: Function;
     currentWeek: Dayjs;

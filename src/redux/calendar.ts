@@ -1,5 +1,5 @@
 import typedAction from "./lib/typedAction";
-import { Dispatch, AnyAction } from 'redux';
+import { Dispatch } from 'redux';
 import api from "../api";
 import dayjs, { Dayjs } from "dayjs";
 import isoWeek from 'dayjs/plugin/isoWeek';
@@ -16,7 +16,6 @@ type CalendarState = {
     currentWeek: Dayjs;
 };
 
-
 const initialState: CalendarState = {
     holidays: {},
     loading: true,
@@ -25,16 +24,7 @@ const initialState: CalendarState = {
     error: null
 };
 
-
-
-export const changeWeekStartDay = (day: number) => {
-    return (dispatch: Dispatch<any>) => {
-        dispatch(setWeekStart(day));
-        dispatch(changeWeek());
-    }
-}
-
-const keysFrom = (since: Dayjs): Dayjs[] => {
+const keysSince = (since: Dayjs): Dayjs[] => {
     const existingKeys: Dayjs[] = [];
     let i;
 
@@ -43,20 +33,26 @@ const keysFrom = (since: Dayjs): Dayjs[] => {
     }
 
     return existingKeys;
-}
+};
 
-export const getVisibleHolidays = (holidays: any, since: Dayjs) => {
-    const keys = keysFrom(since).map(key => key.format(KEY_FORMAT));
+export const getWeek = (holidays: any, since: Dayjs) => {
+    const keys = keysSince(since).map(key => key.format(KEY_FORMAT));
 
-    const visibleHolidays: any = {};
+    const week: any = {};
 
     keys.forEach(key => {
-        if (holidays[key]) visibleHolidays[key] = holidays[key];
+        if (holidays[key]) week[key] = holidays[key];
     });
 
-    return visibleHolidays;
-}
+    return week;
+};
 
+export const changeWeekStartDay = (day: number) => {
+    return (dispatch: Dispatch<any>) => {
+        dispatch(setWeekStart(day));
+        dispatch(changeWeek());
+    }
+};
 
 export const loadCalendarItems = (dateRangeStart: Dayjs, dateRangeEnd: Dayjs) => {
     return async (dispatch: Dispatch<any>, getState: Function) => {
@@ -65,7 +61,7 @@ export const loadCalendarItems = (dateRangeStart: Dayjs, dateRangeEnd: Dayjs) =>
         const startFormatted = dateRangeStart.format(KEY_FORMAT);
         const endFormatted = dateRangeEnd.format(KEY_FORMAT);
         const storeHolidays = getState().calendar.holidays;
-        const existingKeys: Dayjs[] = keysFrom(dateRangeStart);
+        const existingKeys: Dayjs[] = keysSince(dateRangeStart);
 
         if (
             existingKeys.filter(
@@ -89,15 +85,15 @@ export const loadCalendarItems = (dateRangeStart: Dayjs, dateRangeEnd: Dayjs) =>
                     events: holidays[formattedKey] ? holidays[formattedKey] : [],
                     day,
                     date
-                }
+                };
             });
 
 
-            dispatch(setEvents({ holidays: storableHolidays }));
+            dispatch(setHolidays(storableHolidays));
             dispatch(setError(null));
         } catch(e) {
             if (e.response) dispatch(setError(e.response.data.reason));
-            else dispatch(setError(''))
+            else dispatch(setError(''));
         } finally {
             dispatch(finishLoading());
         }
@@ -125,16 +121,14 @@ export const changeWeek = (direction?: string) => {
 
         dispatch(setWeek(start));
 
-        const end = start.endOf('isoweek');
+        const end = start.endOf('isoWeek');
 
         return dispatch(loadCalendarItems(start, end));
     };
 };
 
-
-const setEvents = (events: any) => {
-    const { holidays } = events;
-    return typedAction('calendar/SET_EVENTS', holidays);
+const setHolidays = (events: object) => {
+    return typedAction('calendar/SET_HOLIDAYS', events);
 };
 
 export const setWeekStart = (day: number) => {
@@ -157,20 +151,19 @@ export const finishLoading = () => {
     return typedAction('calendar/FINISH_LOADING')
 };
 
-type CalendarAction = ReturnType<
-    typeof setEvents |
+type CalendarAction = ReturnType<typeof setHolidays |
     typeof setWeekStart |
     typeof setError |
     typeof setWeek |
     typeof startLoading |
-    typeof finishLoading
-    >;
+    typeof finishLoading>;
+
 export function calendarReducer(
     state = initialState,
     action: CalendarAction
 ): CalendarState {
     switch (action.type) {
-        case 'calendar/SET_EVENTS':
+        case 'calendar/SET_HOLIDAYS':
             return {
                 ...state,
                 holidays: {

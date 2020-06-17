@@ -7,28 +7,53 @@
   overflow: hidden;
 
   &__container {
-    flex: 1 0;
+    flex: 1 0 auto;
     padding: 8px;
-    max-width: 250px;
+
+    @include breakpoint('min-width', $mobile-breakpoint) {
+      max-width: 250px;
+    }
   }
 
+
   &__header {
-    padding: 12px;
+    padding: 16px;
     display: flex;
     background: $gray;
     color: $white;
-    flex-flow: row wrap;
-    justify-content: space-between;
+    position: relative;
+    flex-flow: column nowrap;
 
-    @include breakpoint('min-width', $small-breakpoint) {
-      flex-flow: column nowrap;
-      justify-content: initial;
+    @include breakpoint('min-width', $mobile-breakpoint) {
+      padding: 12px;
+    }
+
+    ion-icon {
+      position: absolute;
+      filter: invert(1);
+      top: 16px;
+      right: 16px;
+      mix-blend-mode: overlay;
+      opacity: 0.5;
+      font-size: 32px;
+
+      @include breakpoint('min-width', $mobile-breakpoint) {
+        font-size: 24px;
+        top: 12px;
+        right: 12px;
+      }
     }
   }
 
   &__body {
     padding: 12px;
     min-height: 70px;
+
+    @include breakpoint('min-width', $mobile-breakpoint) {
+      word-break: break-word;
+      hyphenate-character: auto;
+      hyphens: auto;
+    }
   }
 
   &__day, &__date, &__event {
@@ -38,14 +63,24 @@
 
   &__day {
     font-weight: bold;
-    font-size: 14px;
-    line-height: 14px;
+    font-size: 18px;
+    line-height: 18px;
+
+    @include breakpoint('min-width', $mobile-breakpoint) {
+      font-size: 14px;
+      line-height: 14px;
+    }
   }
 
   &__date {
     font-weight: normal;
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 14px;
+    line-height: 14px;
+
+    @include breakpoint('min-width', $mobile-breakpoint) {
+      font-size: 12px;
+      line-height: 12px;
+    }
   }
 
   &__event {

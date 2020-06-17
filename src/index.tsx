@@ -9,6 +9,14 @@ import thunk from 'redux-thunk';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            'ion-icon': any;
+        }
+    }
+}
+
 ReactDOM.render(
     <Provider store={store}>
         <App />

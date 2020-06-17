@@ -9,16 +9,34 @@
 }
 
 .cards {
-  height: 100%;
   padding-top: 4vw;
   margin: 0 -8px;
   width: calc(100% + 16px);
-  flex: 1 0;
+  flex: 0 0;
   display: flex;
   flex-flow: column nowrap;
 
   @include breakpoint('min-width', $mobile-breakpoint) {
     flex-flow: row nowrap;
+  }
+
+  .card--none {
+    display: none;
+
+    @include breakpoint('min-width', $small-breakpoint) {
+      display: block;
+    }
+  }
+
+  .no-events {
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: bold;
+    padding: 12px 8px;
+
+    @include breakpoint('min-width', $small-breakpoint) {
+      display: none;
+    }
   }
 }
 
@@ -28,7 +46,9 @@
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
-  @include breakpoint('min-width', $small-breakpoint) {
+
+  @include breakpoint('min-width', $mobile-breakpoint) {
     flex-flow: row nowrap;
+    align-items: flex-end;
   }
 }

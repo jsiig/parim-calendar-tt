@@ -1,0 +1,36 @@
+@import "../variables";
+@import "../helpers";
+
+.card__container {
+  &.card--none + .card-ellipsis {
+    display: none;
+  }
+
+  @include breakpoint('min-width', $small-breakpoint) {
+    width: calc(100% / 7);
+  }
+}
+
+.card-ellipsis {
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.2;
+  font-size: 32px;
+  padding: 18px;
+
+  [name="ellipsis-horizontal-outline"] { display: none; }
+
+  @include breakpoint('min-width', $mobile-breakpoint) {
+    [name="ellipsis-vertical-outline"] { display: none; }
+    [name="ellipsis-horizontal-outline"] { display: block; }
+  }
+  @include breakpoint('min-width', $small-breakpoint) {
+    display: none;
+  }
+  &:only-of-type {
+    display: none;
+  }
+}

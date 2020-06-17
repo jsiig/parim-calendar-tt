@@ -2,7 +2,7 @@
 
 * React + Redux + Typescript
 * Deployed to https://parim-test-task.siig.ee/ (S3 Static Website Hosting + 
-CloudFlare CDN with SSL)
+Cloudflare CDN with SSL)
 
 ## Some info
 

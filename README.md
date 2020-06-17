@@ -6,8 +6,8 @@ Cloudflare CDN with SSL)
 
 ## Some info
 
-* Design mockup I created in Figma before starting work has been attached in a
-zip file. 
+* The design mockup I created in Figma before starting work has been included
+in a zip file in this repo.
 * Uses ionicons via CDN, had to enable/ignore `<ion-icon />` in Typescript.
 * Uses `dayjs` instead of `moment` library for modularity (smaller bundle).
 * OK, doing a POST request to fetch data is weird. So is supplying a JSON body

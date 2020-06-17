@@ -23,6 +23,7 @@ nice with GET + JSON body, I chose the POST path.
 idea from a UX perspective - do we want to fill up user's history on each page
 nav? We'd need a proper datepicker.)
 * Tests for store actions.
+* More component tests than just for a single component.
 * Runtime PropTypes - Typescript is only helpful at compile-time.
 * Refactor - I feel this is somewhat messier code than I usually write,
 it may be down to the fact that I'm more used to the Vue ecosystem nowadays.

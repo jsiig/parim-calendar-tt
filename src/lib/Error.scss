@@ -1,9 +1,51 @@
+@import "../variables";
+
 .error {
   flex: 1 0 auto;
   width: 100%;
   padding: 0;
   text-align: center;
   display: flex;
+  flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
+
+  &__retry {
+    box-sizing: border-box;
+    appearance: none;
+    border: none;
+    background: transparent;
+    font-family: $body-font-family;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 0 -4px 0 -2px $purple inset;
+    color: $purple;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+
+    &:after {
+      box-sizing: border-box;
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: -1;
+      background: $radial-gradient-blue;
+      opacity: 0;
+      transition: all 0.3s ease-in-out;
+    }
+
+    &:hover {
+      border-bottom-color: transparent;
+      color: $white;
+
+      &:after {
+        opacity: 1;
+      }
+    }
+  }
 }

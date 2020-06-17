@@ -31,10 +31,10 @@
 
     ion-icon {
       position: absolute;
-      filter: invert(1);
       top: 16px;
       right: 16px;
       mix-blend-mode: overlay;
+      color: $white;
       opacity: 0.5;
       font-size: 32px;
 

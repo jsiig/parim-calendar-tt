@@ -25,7 +25,7 @@ function WeekPicker (props: Props) {
             </div>
             <button className="week-picker__button" onClick={() => props.onChange('NEXT')}><ion-icon name="chevron-forward-outline"></ion-icon></button>
         </div>
-    )
+    );
 }
 
 export default WeekPicker;

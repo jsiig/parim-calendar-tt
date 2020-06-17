@@ -8,16 +8,20 @@
   align-items: center;
   height: 70px;
   background: $radial-gradient-blue;
+  position: sticky;
+  z-index: 10;
+  top: 0;
 
   @include breakpoint('min-width', $mobile-breakpoint) {
     height: 200px;
+    position: relative;
   }
 
   &__title {
     font-style: normal;
     font-weight: 900;
     color: $white;
-
+    margin: 0;
     font-size: 18px;
     line-height: 22px;
 

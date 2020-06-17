@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./WeekDayPicker.scss"
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 interface Props {
@@ -14,6 +14,7 @@ function WeekDayPicker (props: Props) {
         <div className="week-day-picker">
             <label>
                 My week starts on a...
+                <ion-icon name="chevron-down-sharp"></ion-icon>
                 <select value={value} onChange={event => onChange(event.target.value)}>
                     {daysOfWeek.map((weekDay, weekDayIndex) => <option value={weekDayIndex + 1} key={weekDayIndex}>{weekDay}</option>)}
                 </select>

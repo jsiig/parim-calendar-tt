@@ -6,6 +6,12 @@
   border-radius: 10px;
   overflow: hidden;
 
+  &__container {
+    flex: 1 0;
+    padding: 8px;
+    max-width: 250px;
+  }
+
   &__header {
     padding: 12px;
     display: flex;
@@ -22,6 +28,7 @@
 
   &__body {
     padding: 12px;
+    min-height: 70px;
   }
 
   &__day, &__date, &__event {
@@ -31,20 +38,33 @@
 
   &__day {
     font-weight: bold;
-    font-size: 18px;
-    line-height: 21px;
+    font-size: 14px;
+    line-height: 14px;
   }
 
   &__date {
     font-weight: normal;
     font-size: 12px;
-    line-height: 21px;
+    line-height: 12px;
   }
 
   &__event {
     font-weight: 600;
     font-size: 18px;
     line-height: 22px;
+
+    @include breakpoint('min-width', $mobile-breakpoint) {
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    &--public {
+      color: $red;
+    }
+
+    &--folk {
+      color: $purple;
+    }
   }
 
   // States
@@ -60,10 +80,10 @@
       background: $radial-gradient-blue;
     }
   }
+
   &--public {
     .card__header {
       background: $radial-gradient-red;
     }
-    color: $red;
   }
 }

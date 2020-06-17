@@ -1,3 +1,37 @@
+@import "../helpers";
+@import "../variables";
 .week-day-picker {
+  label {
+    font-style: normal;
+    font-weight: normal;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 21px;
+    color: $black;
+    position: relative;
+    background: transparent;
 
+    ion-icon {
+      font-size: 31px;
+      position: absolute;
+      right: 12px;
+      bottom: 8px;
+      z-index: -1;
+    }
+  }
+
+  select {
+    background: transparent;
+    display: block;
+    appearance: none;
+    border: 3px solid $black;
+    color: $black;
+    padding: 10px 12px;
+    padding-right: 48px;
+    font-family: $body-font-family;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+  }
 }

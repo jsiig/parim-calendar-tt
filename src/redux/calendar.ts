@@ -3,12 +3,10 @@ import { Dispatch, AnyAction } from 'redux';
 import api from "../api";
 import dayjs, { Dayjs } from "dayjs";
 import isoWeek from 'dayjs/plugin/isoWeek';
-import { AxiosResponse } from "axios";
 
 dayjs.extend(isoWeek);
 
-// @ts-ignore
-window.dayjs = dayjs;
+const KEY_FORMAT = 'YYYY-MM-DD';
 
 type CalendarState = {
     holidays: object;
@@ -30,46 +28,109 @@ const initialState: CalendarState = {
 
 
 export const changeWeekStartDay = (day: number) => {
-    return (dispatch: Dispatch<AnyAction>) => {
-
+    return (dispatch: Dispatch<any>) => {
+        dispatch(setWeekStart(day));
+        dispatch(changeWeek());
     }
 }
 
+const keysFrom = (since: Dayjs): Dayjs[] => {
+    const existingKeys: Dayjs[] = [];
+    let i;
 
-export const loadCalendarItems = (dateRangeStart: string, dateRangeEnd: string) => {
-    return (dispatch: Dispatch<any>) => {
-        api.getHolidays(dateRangeStart, dateRangeEnd).then(data => {
-            console.log(data)
-            dispatch(setEvents(data));
+    for (i = 0; i < 7; i++) {
+        existingKeys.push(since.add(i, 'day'));
+    }
+
+    return existingKeys;
+}
+
+export const getVisibleHolidays = (holidays: any, since: Dayjs) => {
+    const keys = keysFrom(since).map(key => key.format(KEY_FORMAT));
+
+    const visibleHolidays: any = {};
+
+    keys.forEach(key => {
+        if (holidays[key]) visibleHolidays[key] = holidays[key];
+    });
+
+    return visibleHolidays;
+}
+
+
+export const loadCalendarItems = (dateRangeStart: Dayjs, dateRangeEnd: Dayjs) => {
+    return async (dispatch: Dispatch<any>, getState: Function) => {
+        dispatch(startLoading());
+
+        const startFormatted = dateRangeStart.format(KEY_FORMAT);
+        const endFormatted = dateRangeEnd.format(KEY_FORMAT);
+        const storeHolidays = getState().calendar.holidays;
+        const existingKeys: Dayjs[] = keysFrom(dateRangeStart);
+
+        if (
+            existingKeys.filter(
+                item => storeHolidays[item.format(KEY_FORMAT)]
+            ).length === 7
+        ) {
+            return dispatch(finishLoading());
+        }
+
+        try {
+            const { data } = await api.getHolidays(startFormatted, endFormatted);
+            const { holidays } = data;
+            const storableHolidays: any = {};
+
+            existingKeys.forEach((item: Dayjs) => {
+                const formattedKey = item.format(KEY_FORMAT);
+                const day = item.format('dddd');
+                const date = item.format('MMM D');
+
+                storableHolidays[formattedKey] = {
+                    events: holidays[formattedKey] ? holidays[formattedKey] : [],
+                    day,
+                    date
+                }
+            });
+
+
+            dispatch(setEvents({ holidays: storableHolidays }));
             dispatch(setError(null));
-        }).catch(error => {
-            dispatch(setError(error));
-        });
+        } catch(e) {
+            if (e.response) dispatch(setError(e.response.data.reason));
+            else dispatch(setError(''))
+        } finally {
+            dispatch(finishLoading());
+        }
     };
 };
 
-export const changeWeek = (direction: string) => {
+export const changeWeek = (direction?: string) => {
     return (dispatch: Dispatch<any>, getState: Function) => {
         const { calendar } = getState();
         const { weekStarts, currentWeek } = calendar;
 
+        const currentWeekStart = currentWeek.startOf('isoWeek').isoWeekday(weekStarts);
+
         const previousWeekStart = currentWeek.subtract(1, 'week')
             .startOf('isoWeek')
             .isoWeekday(weekStarts);
+
         const nextWeekStart = currentWeek.add(1, 'week')
             .startOf('isoWeek')
             .isoWeekday(weekStarts);
 
-        const week = direction === 'NEXT' ? nextWeekStart : previousWeekStart;
+        let start = currentWeekStart;
+        if (direction === 'NEXT') start = nextWeekStart;
+        else if (direction === 'PREV') start = previousWeekStart;
 
-        dispatch(setWeek(week));
+        dispatch(setWeek(start));
 
-        const startFormatted = week.format('YYYY-MM-DD');
-        const endFormatted = week.endOf('isoweek').format('YYYY-MM-DD');
+        const end = start.endOf('isoweek');
 
-        return dispatch(loadCalendarItems(startFormatted, endFormatted));
+        return dispatch(loadCalendarItems(start, end));
     };
 };
+
 
 const setEvents = (events: any) => {
     const { holidays } = events;
@@ -77,7 +138,6 @@ const setEvents = (events: any) => {
 };
 
 export const setWeekStart = (day: number) => {
-    console.log(day)
     return typedAction('calendar/SET_WEEK_START', day);
 };
 
@@ -87,10 +147,24 @@ export const setError = (error: string | null) => {
 
 export const setWeek = (week: Dayjs) => {
     return typedAction('calendar/SET_WEEK', week)
-}
+};
 
+export const startLoading = () => {
+    return typedAction('calendar/START_LOADING')
+};
 
-type CalendarAction = ReturnType<typeof setEvents | typeof setWeekStart | typeof setError | typeof setWeek>;
+export const finishLoading = () => {
+    return typedAction('calendar/FINISH_LOADING')
+};
+
+type CalendarAction = ReturnType<
+    typeof setEvents |
+    typeof setWeekStart |
+    typeof setError |
+    typeof setWeek |
+    typeof startLoading |
+    typeof finishLoading
+    >;
 export function calendarReducer(
     state = initialState,
     action: CalendarAction
@@ -102,8 +176,7 @@ export function calendarReducer(
                 holidays: {
                     ...state.holidays,
                     ...action.payload
-                },
-                loading: false
+                }
             };
         case 'calendar/SET_WEEK_START':
             return {
@@ -119,6 +192,16 @@ export function calendarReducer(
             return {
                 ...state,
                 currentWeek: action.payload
+            };
+        case 'calendar/START_LOADING':
+            return {
+                ...state,
+                loading: true
+            };
+        case 'calendar/FINISH_LOADING':
+            return {
+                ...state,
+                loading: false
             };
         default:
             return state;

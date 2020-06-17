@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API_KEY = '06c71e51087a5c7ba87b36ad67a45912';
-
+const API_URL = 'https://wozmx9dh26.execute-api.eu-west-1.amazonaws.com/api/holidays'
 export default {
     getHolidays (dateRangeStart: string, dateRangeEnd: string) {
         const data = {
@@ -17,8 +17,8 @@ export default {
         // Either way - this does the trick for this API.
 
         const config = {
-            method: 'POST',
-            url: 'https://wozmx9dh26.execute-api.eu-west-1.amazonaws.com/api/holidays',
+            method: 'POST', // Would greatly prefer a GET
+            url: API_URL,
             headers: {
                 'Content-Type': 'application/json'
             },

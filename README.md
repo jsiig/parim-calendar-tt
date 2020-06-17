@@ -16,8 +16,7 @@ params for the request; and since my library of choice - axios - does not play
 nice with GET + JSON body, I chose the POST path.
 * So, I haven't worked with TypeScript, React or Redux in over 6 months now.
 [This is the guide I used to get started again.](https://levelup.gitconnected.com/set-up-a-typescript-react-redux-project-35d65f14b869)
-* At the time of writing this README, I haven't added any tests or runtime
-PropTypes.
+* At the time of writing this README, I haven't added any runtime PropTypes.
 
 ## Potential future improvements
 * React router with browserHistory for back button navigation (might be a bad
@@ -29,9 +28,6 @@ nav? We'd need a proper datepicker.)
 it may be down to the fact that I'm more used to the Vue ecosystem nowadays.
 * Figure out a couple of Typescript issues when dispatching redux-thunk
 action from another redux-thunk action.
-
-## Known bugs
-* None that I'm aware of.
 
 ## Available Scripts
 

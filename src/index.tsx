@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
+// Allow ionicons to be used with Typescript+JSX
 declare global {
     namespace JSX {
         interface IntrinsicElements {

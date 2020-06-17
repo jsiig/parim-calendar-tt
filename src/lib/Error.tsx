@@ -1,14 +1,6 @@
 import React from "react";
 import './Error.scss';
 
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            'ion-icon': any;
-        }
-    }
-}
-
 interface Props {
     error?: string;
     onRetry: Function

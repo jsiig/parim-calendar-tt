@@ -1,14 +1,6 @@
 import React from "react";
 import './Loading.scss';
 
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            'ion-icon': any;
-        }
-    }
-}
-
 function Loading () {
     return (
         <div className="loading">

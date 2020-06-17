@@ -64,6 +64,8 @@ export const loadCalendarItems = (dateRangeStart: Dayjs, dateRangeEnd: Dayjs) =>
         const storeHolidays = getState().calendar.holidays;
         const existingKeys: Dayjs[] = keysSince(dateRangeStart);
 
+        // If we already have all the data for this view,
+        // let's not do any more API requests
         if (
             existingKeys.filter(
                 item => storeHolidays[item.format(KEY_FORMAT)]
@@ -77,6 +79,8 @@ export const loadCalendarItems = (dateRangeStart: Dayjs, dateRangeEnd: Dayjs) =>
             const { holidays } = data;
             const storableHolidays: any = {};
 
+            // Creates keys in store for all days,
+            // including ones without any holidays
             existingKeys.forEach((item: Dayjs) => {
                 const formattedKey = item.format(KEY_FORMAT);
                 const day = item.format('dddd');

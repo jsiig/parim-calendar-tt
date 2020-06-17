@@ -52,7 +52,7 @@ function App(props: PropsFromRedux) {
 
     useEffect(() => {
         onLoad();
-    }, []);
+    }, []); // eslint-disable-line
 
     const holidaysKeys = Object.keys(holidays);
     const onlyHolidaysKeys = holidaysKeys.filter(key => holidays[key].events.length);

@@ -1,11 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {
-    changeWeek,
-    changeWeekStartDay,
-    getWeek
-} from './redux/calendar';
+import { changeWeek, changeWeekStartDay, getWeek } from './redux/calendar';
 import { RootState } from "./redux";
 
 import Header from "./layout/Header";
@@ -19,41 +15,7 @@ import CardEllipsis from "./lib/CardEllipsis";
 import './App.scss';
 import Card from "./lib/Card";
 
-const mapState = (state: RootState) => ({
-    loading: state.calendar.loading,
-    error: state.calendar.error,
-    currentWeek: state.calendar.currentWeek,
-    weekStarts: state.calendar.weekStarts,
-    holidays: getWeek(state.calendar.holidays, state.calendar.currentWeek)
-});
-
-const mapDispatch = (dispatch: any) => ({
-    onWeekChange: (direction: string) => dispatch(changeWeek(direction)),
-    onWeekDayChange: (value: number) => dispatch(changeWeekStartDay(value)),
-    onLoad: () => dispatch(changeWeek())
-});
-
-const connector = connect(mapState, mapDispatch);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function App(props: PropsFromRedux) {
-    const {
-        holidays,
-        currentWeek,
-        weekStarts,
-        loading,
-        error,
-        onLoad,
-        onWeekChange,
-        onWeekDayChange
-    } = props;
-
-
-    useEffect(() => {
-        onLoad();
-    }, []); // eslint-disable-line
-
+function Cards ({ holidays }: any) {
     const holidaysKeys = Object.keys(holidays);
     const onlyHolidaysKeys = holidaysKeys.filter(key => holidays[key].events.length);
 
@@ -73,29 +35,46 @@ function App(props: PropsFromRedux) {
         );
     });
 
-    const noEvents = (
-        holidaysKeys.filter((key: string) => holidays[key].events.length > 0).length ?
-            '' : <div className="no-events">No holidays to display for this week :(</div>
-    );
+    return (
+        <>
+            {cards}
+        </>
+    )
+}
+
+function App() {
+    const dispatch = useDispatch()
+    const holidays = useSelector((state: RootState) => getWeek(state.calendar.holidays, state.calendar.currentWeek))
+    const { currentWeek, weekStarts, loading, error } = useSelector((state: RootState) => state.calendar)
+
+    useEffect(() => {
+        dispatch(changeWeek());
+    }, []); // eslint-disable-line
 
     let renderable: JSX.Element;
-
     if (loading) {
-        renderable = (<Loading />);
+        renderable = (
+            <Loading />
+        );
     } else if (error) {
-        renderable = (<Error onRetry={() => onLoad()} error={error} />);
+        renderable = (
+            <Error onRetry={() => dispatch(changeWeek())} error={error} />
+        );
     } else {
-        renderable = (<div className="cards">{cards}{noEvents}</div>);
+        renderable = (
+            <div className="cards">
+                <Cards holidays={holidays} />
+            </div>
+        );
     }
-
 
     return (
         <div className="app">
             <Header />
             <Body>
                 <div className="controls">
-                    <WeekPicker currentWeek={currentWeek} onChange={(dir: string) => onWeekChange(dir)} />
-                    <WeekDayPicker value={weekStarts} onChange={onWeekDayChange}/>
+                    <WeekPicker currentWeek={currentWeek} onChange={(dir: string) => dispatch(changeWeek(dir))} />
+                    <WeekDayPicker value={weekStarts} onChange={dispatch(changeWeekStartDay)} />
                 </div>
                 {renderable}
             </Body>
@@ -104,4 +83,4 @@ function App(props: PropsFromRedux) {
 }
 
 
-export default connector(App)
+export default App;

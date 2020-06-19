@@ -39,13 +39,13 @@ function Cards ({ holidays }: any) {
         <>
             {cards}
         </>
-    )
+    );
 }
 
 function App() {
-    const dispatch = useDispatch()
-    const holidays = useSelector((state: RootState) => getWeek(state.calendar.holidays, state.calendar.currentWeek))
-    const { currentWeek, weekStarts, loading, error } = useSelector((state: RootState) => state.calendar)
+    const dispatch = useDispatch();
+    const holidays = useSelector((state: RootState) => getWeek(state.calendar.holidays, state.calendar.currentWeek));
+    const { currentWeek, weekStarts, loading, error } = useSelector((state: RootState) => state.calendar);
 
     useEffect(() => {
         dispatch(changeWeek());
